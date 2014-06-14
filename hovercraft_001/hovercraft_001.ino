@@ -98,6 +98,10 @@ void pitch(int thedirection)  {
     hyper = FORWARD; lag = BACKWARD;
     normal1 = RIGHT; normal2 = LEFT;
   }
+  else {
+    fly();
+    return;
+  }
    
    analogWrite(motorpins[hyper][STANDARD], HYPERSPEED);
    analogWrite(motorpins[normal1][STANDARD], NORMALSPEED);
