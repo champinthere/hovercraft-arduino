@@ -126,7 +126,7 @@ void setup()  {
 }
 
 void loop()  {
-  char ch = Serial.read();
+  int ch = Serial.read();
   int dir = ch - '0';
   move(dir);
 }
