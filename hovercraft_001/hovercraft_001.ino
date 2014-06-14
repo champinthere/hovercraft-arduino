@@ -21,7 +21,7 @@
 - Stepper4 - 43
 - Pins 1,3,4 are used by SPI communication
 */
-int motorpins[][2] = {{2, 5}, {6, 7}, {8, 9}, {10, 11}};
+int motorpins[][2] = {{2, 6}, {3, 7}, {4, 9}, {5, 11}};
 
 #define UNDEFINED -1
 #define RIGHT    0
