@@ -80,36 +80,38 @@ int get_reverse(int thedirection)  {
 }
 
 void pitch(int thedirection)  {
-  unpitch();
-  int normal1, normal2, hyper, lag;
-  if (thedirection == RIGHT)  {
-    hyper = LEFT; lag = RIGHT;
-    normal1 = FORWARD; normal2 = BACKWARD;
+  if (current_direction != thedirection)  {
+    unpitch();
+    int normal1, normal2, hyper, lag;
+    if (thedirection == RIGHT)  {
+      hyper = LEFT; lag = RIGHT;
+      normal1 = FORWARD; normal2 = BACKWARD;
+    }
+    else if (thedirection == LEFT)  {
+      hyper = RIGHT; lag = LEFT;
+      normal1 = FORWARD; normal2 = BACKWARD;
+    }
+    else if (thedirection == FORWARD)  {
+      hyper = BACKWARD; lag = FORWARD;
+      normal1 = RIGHT; normal2 = LEFT;
+    }
+    else if (thedirection == BACKWARD)  {
+      hyper = FORWARD; lag = BACKWARD;
+      normal1 = RIGHT; normal2 = LEFT;
+    }
+    else {
+      fly();
+      return;
+    }
+     
+     analogWrite(motorpins[hyper][STANDARD], HYPERSPEED);
+     analogWrite(motorpins[normal1][STANDARD], NORMALSPEED);
+     analogWrite(motorpins[normal2][STANDARD], NORMALSPEED);
+     analogWrite(motorpins[lag][STANDARD], LAGSPEED);
+     delay(400);
+     standardize(); 
+     current_direction = thedirection; 
   }
-  else if (thedirection == LEFT)  {
-    hyper = RIGHT; lag = LEFT;
-    normal1 = FORWARD; normal2 = BACKWARD;
-  }
-  else if (thedirection == FORWARD)  {
-    hyper = BACKWARD; lag = FORWARD;
-    normal1 = RIGHT; normal2 = LEFT;
-  }
-  else if (thedirection == BACKWARD)  {
-    hyper = FORWARD; lag = BACKWARD;
-    normal1 = RIGHT; normal2 = LEFT;
-  }
-  else {
-    fly();
-    return;
-  }
-   
-   analogWrite(motorpins[hyper][STANDARD], HYPERSPEED);
-   analogWrite(motorpins[normal1][STANDARD], NORMALSPEED);
-   analogWrite(motorpins[normal2][STANDARD], NORMALSPEED);
-   analogWrite(motorpins[lag][STANDARD], LAGSPEED);
-   delay(400);
-   standardize(); 
-   current_direction = thedirection; 
 }
 
 void unpitch()  {
@@ -117,4 +119,14 @@ void unpitch()  {
     pitch(get_reverse(current_direction));
   }
   current_direction = UNDEFINED;
+}
+
+void setup()  {
+  Serial.begin(9600);
+}
+
+void loop()  {
+  char ch = Serial.read();
+  int dir = ch - '0';
+  move(dir);
 }
